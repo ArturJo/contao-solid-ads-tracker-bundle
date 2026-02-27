@@ -1,29 +1,29 @@
 # Contao Solid Ads Tracker Bundle
 
-Ein Contao 5.3 Bundle zum automatischen Protokollieren von Besuchern, die über **Google Ads** (`gclid`) oder **Bing Ads** (`msclkid`) auf die Website gelangt sind.
+A Contao 5.3 bundle for automatically tracking visitors who arrive via **Google Ads** (`gclid`) or **Bing Ads** (`msclkid`).
 
 ## Features
 
-- Automatische Erkennung von Google-Ads-Klicks (`gclid`) und Bing-Ads-Klicks (`msclkid`)
-- Speicherung aller Treffer in einer eigenen Datenbanktabelle (`tl_solid_ads_visit`)
-- Erfassung aller UTM-Parameter (`utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`)
-- Backend-Modul unter **System → Ads Tracker** zur Auswertung aller protokollierten Besuche
-- Datumsfilter (Von / Bis) mit Anzeige der gefilterten Eintragsanzahl
-- Filterung nach Quelle (Google / Bing), UTM-Source, -Medium und -Kampagne
-- Volltextsuche über URL, Click-IDs, UTM-Parameter, Referrer und User-Agent
-- Detailansicht pro Eintrag mit allen gespeicherten Daten
-- Export der gefilterten Daten als **CSV** oder **JSON** (Dateiname enthält Datum, Uhrzeit und aktive Filter)
-- Installierbar über den Contao Manager
+- Automatic detection of Google Ads clicks (`gclid`) and Bing Ads clicks (`msclkid`)
+- Stores all hits in a dedicated database table (`tl_solid_ads_visit`)
+- Records all UTM parameters (`utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`)
+- Backend module under **System → Ads Tracker** for reviewing all tracked visits
+- Date range filter (From / To) with live entry count display
+- Dropdown filters by source (Google / Bing), UTM Source, Medium and Campaign
+- Full-text search across URL, Click-IDs, UTM parameters, referrer and user agent
+- Detail view per entry with all stored fields
+- Export filtered data as **CSV** or **JSON** (filename includes date, time and active filters)
+- Installable via Contao Manager
 
 ---
 
 ## Installation
 
-### Via Contao Manager (empfohlen)
+### Via Contao Manager (recommended)
 
-1. Contao Manager öffnen
-2. Nach `solidwork/contao-solid-ads-tracker-bundle` suchen
-3. Installieren und Datenbank aktualisieren
+1. Open Contao Manager
+2. Search for `solidwork/contao-solid-ads-tracker-bundle`
+3. Install and update the database
 
 ### Via Composer
 
@@ -31,7 +31,7 @@ Ein Contao 5.3 Bundle zum automatischen Protokollieren von Besuchern, die über 
 composer require solidwork/contao-solid-ads-tracker-bundle
 ```
 
-Anschließend die Datenbanktabelle anlegen:
+Then create the database table:
 
 ```bash
 php bin/console contao:migrate
@@ -39,85 +39,85 @@ php bin/console contao:migrate
 
 ---
 
-## Konsolen-Befehle
+## Console Commands
 
-### Datenbank migrieren
+### Run database migration
 
-Nach der Installation die Tabelle anlegen:
+After installation, create the table:
 
 ```bash
 php bin/console contao:migrate
 ```
 
-### Demo-Einträge laden
+### Load demo entries
 
-Um die Backend-Ansicht mit Beispieldaten zu testen:
+To test the backend view with sample data:
 
 ```bash
 php bin/console solidwork:ads-tracker:load-fixtures
 ```
 
-Legt 10 realistische Beispieleinträge (Google Ads & Bing Ads) über einen Zeitraum von 60 Tagen an. Danach im Contao-Backend unter **System → Ads Tracker** sichtbar.
+Creates 10 realistic demo entries (Google Ads & Bing Ads) spread over 60 days. Visible in the Contao backend under **System → Ads Tracker** afterwards.
 
 ---
 
-## Backend-Modul
+## Backend Module
 
-Das Modul erscheint im Contao-Backend unter **System → Ads Tracker**.
+The module appears in the Contao backend under **System → Ads Tracker**.
 
-### Listenansicht
+### List View
 
-Zeigt alle protokollierten Besuche mit folgenden Spalten:
+Displays all tracked visits with the following columns:
 
-| Spalte | Beschreibung |
+| Column | Description |
 |---|---|
-| `#` | ID des Eintrags |
-| Quelle | Google Ads oder Bing Ads |
-| Datum & Uhrzeit | Zeitpunkt des Besuchs |
-| UTM Source | utm_source-Parameter |
-| UTM Medium | utm_medium-Parameter |
-| UTM Kampagne | utm_campaign-Parameter |
-| Aufgerufene URL | Vollständige URL des Besuchs |
+| `#` | Entry ID |
+| Source | Google Ads or Bing Ads |
+| Date & Time | Timestamp of the visit |
+| UTM Source | utm_source parameter |
+| UTM Medium | utm_medium parameter |
+| UTM Campaign | utm_campaign parameter |
+| Visited URL | Full URL of the visit |
 
-### Datumsfilter
+### Date Range Filter
 
-Im oberen Panel kann ein Zeitraum (Von / Bis) eingegeben werden. Nach Klick auf **Anwenden** wird die Liste auf diesen Zeitraum eingeschränkt. Neben dem Filter wird die aktuelle Eintragsanzahl angezeigt:
+A date range (From / To) can be entered in the top panel. After clicking **Apply**, the list is restricted to that period. The current entry count is displayed next to the filter:
 
-- Ohne Filter: `13 Einträge gesamt`
-- Mit Filter: `3 von 13 Einträgen`
+- Without filter: `13 entries total`
+- With filter: `3 of 13 entries`
 
-### Dropdown-Filter
+### Dropdown Filters
 
-Filterung nach folgenden Feldern per Dropdown:
+Filter by the following fields via dropdown:
 
-- **Quelle** – Google Ads oder Bing Ads
+- **Source** – Google Ads or Bing Ads
 - **UTM Source**
 - **UTM Medium**
-- **UTM Kampagne**
+- **UTM Campaign**
 
-### Suche
+### Search
 
-Volltextsuche über folgende Felder:
+Full-text search across the following fields:
 
-- Aufgerufene URL
+- Visited URL
 - Google Click-ID (`gclid`)
 - Bing Click-ID (`msclkid`)
-- UTM-Parameter
+- UTM parameters
 - Referrer
 - Browser / User-Agent
 
-### Detailansicht
+### Detail View
 
-Klick auf das Info-Symbol öffnet die Detailansicht mit allen gespeicherten Feldern des Eintrags.
+Clicking the info icon opens the detail view with all stored fields for that entry.
 
 ### Export
 
-Über die Buttons **CSV exportieren** und **JSON exportieren** können alle aktuell gefilterten Einträge heruntergeladen werden. Der Export berücksichtigt dabei alle aktiven Filter:
+Use the **Export CSV** and **Export JSON** buttons to download all currently filtered entries. The export respects all active filters:
 
-- Datumsfilter (Von / Bis)
-- Dropdown-Filter (Quelle, UTM Source, UTM Medium, UTM Kampagne)
+- Date range filter (From / To)
+- Dropdown filters (Source, UTM Source, UTM Medium, UTM Campaign)
 
-Der Dateiname enthält automatisch Datum, Uhrzeit und die aktiven Filter, z. B.:
+The filename automatically includes the date, time and active filters, e.g.:
 
 ```
 ads-tracker_2026-02-27_14-32-05_source-google_utm_campaign-winter2026.csv
@@ -126,46 +126,46 @@ ads-tracker_2026-02-27_14-32-05_2026-02-01_bis_2026-02-27.json
 
 ---
 
-## Wie funktioniert das Tracking?
+## How Does Tracking Work?
 
-Das Bundle registriert einen Symfony-Event-Listener auf `kernel.request` (Priorität 8). Bei jedem GET-Request wird geprüft, ob die URL einen `gclid`- oder `msclkid`-Parameter enthält. Falls ja, wird der Besuch sofort in der Datenbank gespeichert – bevor die Seite gerendert wird.
+The bundle registers a Symfony event listener on `kernel.request` (priority 8). Every GET request is checked for a `gclid` or `msclkid` parameter. If found, the visit is immediately saved to the database – before the page is rendered.
 
-Es werden nur vollständige Seitenaufrufe erfasst (kein AJAX, keine Sub-Requests). Tritt ein Fehler auf (z. B. Tabelle noch nicht angelegt), schlägt der Listener still fehl ohne die Seite zu beeinflussen.
+Only full page requests are tracked (no AJAX, no sub-requests). If an error occurs (e.g. table not yet created), the listener fails silently without affecting the page.
 
 ---
 
-## Datenbankstruktur (`tl_solid_ads_visit`)
+## Database Structure (`tl_solid_ads_visit`)
 
-| Spalte         | Typ          | Beschreibung                          |
+| Column         | Type         | Description                           |
 |----------------|--------------|---------------------------------------|
-| `id`           | INT          | Primärschlüssel, auto-increment       |
-| `tstamp`       | INT          | Unix-Timestamp (intern)               |
-| `source`       | VARCHAR(10)  | `google` oder `bing`                  |
-| `visited_at`   | VARCHAR(20)  | Datum & Uhrzeit (`Y-m-d H:i:s`)       |
-| `page_url`     | TEXT         | Vollständige aufgerufene URL          |
+| `id`           | INT          | Primary key, auto-increment           |
+| `tstamp`       | INT          | Unix timestamp (internal)             |
+| `source`       | VARCHAR(10)  | `google` or `bing`                    |
+| `visited_at`   | VARCHAR(20)  | Date & time (`Y-m-d H:i:s`)           |
+| `page_url`     | TEXT         | Full URL of the visited page          |
 | `gclid`        | VARCHAR(255) | Google Ads Click-ID                   |
 | `msclkid`      | VARCHAR(255) | Bing Ads Click-ID                     |
-| `utm_source`   | VARCHAR(255) | UTM-Parameter: source                 |
-| `utm_medium`   | VARCHAR(255) | UTM-Parameter: medium                 |
-| `utm_campaign` | VARCHAR(255) | UTM-Parameter: campaign               |
-| `utm_term`     | VARCHAR(255) | UTM-Parameter: term                   |
-| `utm_content`  | VARCHAR(255) | UTM-Parameter: content                |
-| `referrer`     | TEXT         | HTTP-Referrer-Header                  |
-| `user_agent`   | TEXT         | Browser / User-Agent                  |
+| `utm_source`   | VARCHAR(255) | UTM parameter: source                 |
+| `utm_medium`   | VARCHAR(255) | UTM parameter: medium                 |
+| `utm_campaign` | VARCHAR(255) | UTM parameter: campaign               |
+| `utm_term`     | VARCHAR(255) | UTM parameter: term                   |
+| `utm_content`  | VARCHAR(255) | UTM parameter: content                |
+| `referrer`     | TEXT         | HTTP referrer header                  |
+| `user_agent`   | TEXT         | Browser / user agent                  |
 
 ---
 
-## Systemanforderungen
+## Requirements
 
-- PHP 8.1 oder höher
-- Contao 5.3 oder höher
+- PHP 8.1 or higher
+- Contao 5.3 or higher
 
 ---
 
-## Lizenz
+## License
 
-MIT License – siehe [LICENSE](LICENSE)
+MIT License – see [LICENSE](LICENSE)
 
-## Autor
+## Author
 
 [Solidwork](https://github.com/ArturJo)
