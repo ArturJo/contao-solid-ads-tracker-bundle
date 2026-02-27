@@ -1,0 +1,28 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Solidwork\ContaoSolidAdsTrackerBundle\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/ContaoManager/'
+            - '../src/Model/'
+
+    Solidwork\ContaoSolidAdsTrackerBundle\EventListener\DataContainer\AdsVisitDateFilterListener:
+        public: true
+        arguments:
+            $connection: '@doctrine.dbal.default_connection'
+
+    Solidwork\ContaoSolidAdsTrackerBundle\EventListener\DataContainer\AdsVisitExportListener:
+        public: true
+        arguments:
+            $connection: '@doctrine.dbal.default_connection'
+
+    Solidwork\ContaoSolidAdsTrackerBundle\EventListener\AdsTrackingListener:
+        arguments:
+            $connection: '@doctrine.dbal.default_connection'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 8 }

@@ -1,0 +1,29 @@
+{
+    "name": "solidwork/contao-solid-ads-tracker-bundle",
+    "description": "Tracks visitors from Google Ads (gclid) and Bing Ads (msclkid) and logs them in the Contao 5 backend.",
+    "type": "contao-bundle",
+    "keywords": ["contao", "ads", "tracking", "google-ads", "bing-ads", "analytics", "gclid", "msclkid"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Solidwork",
+            "homepage": "https://github.com/ArturJo"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "contao/core-bundle": "^5.3",
+        "contao/manager-plugin": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Solidwork\\ContaoSolidAdsTrackerBundle\\": "src/"
+        }
+    },
+    "extra": {
+        "contao-manager-plugin": "Solidwork\\ContaoSolidAdsTrackerBundle\\ContaoManager\\Plugin",
+        "branch-alias": {
+            "dev-main": "1.0.x-dev"
+        }
+    }
+}
