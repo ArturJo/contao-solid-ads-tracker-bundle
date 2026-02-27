@@ -164,7 +164,7 @@ Only full page requests are tracked (no AJAX, no sub-requests). If an error occu
 
 ## License
 
-MIT License – see [LICENSE](LICENSE)
+LGPL-3.0-or-later – see [LICENSE](LICENSE)
 
 ## Author
 

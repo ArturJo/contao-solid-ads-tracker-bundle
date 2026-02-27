@@ -3,7 +3,7 @@
     "description": "Tracks visitors from Google Ads (gclid) and Bing Ads (msclkid) and logs them in the Contao 5 backend.",
     "type": "contao-bundle",
     "keywords": ["contao", "ads", "tracking", "google-ads", "bing-ads", "analytics", "gclid", "msclkid"],
-    "license": "MIT",
+    "license": "LGPL-3.0-or-later",
     "authors": [
         {
             "name": "Solidwork",
