@@ -19,12 +19,21 @@ class AdsTrackingListener
 
     public function onKernelRequest(RequestEvent $event): void
     {
+        $logFile = dirname(__DIR__, 5) . '/var/logs/ads-tracker-debug.txt';
+        $request = $event->getRequest();
+
+        file_put_contents($logFile,
+            date('Y-m-d H:i:s') . ' CALLED isMain=' . ($event->isMainRequest() ? 'yes' : 'no')
+            . ' method=' . $request->getMethod()
+            . ' gclid=' . $request->query->get('gclid', '')
+            . ' URI=' . $request->getUri() . "\n",
+            FILE_APPEND
+        );
+
         // Only handle the main request, not sub-requests
         if (!$event->isMainRequest()) {
             return;
         }
-
-        $request = $event->getRequest();
 
         // Only track regular page GET requests
         if (!$request->isMethod('GET') || $request->isXmlHttpRequest()) {
@@ -39,8 +48,8 @@ class AdsTrackingListener
             return;
         }
 
-        file_put_contents(dirname(__DIR__, 5) . '/var/logs/ads-tracker-debug.txt',
-            date('Y-m-d H:i:s') . ' TRACKING: gclid=' . $gclid . ' msclkid=' . $msclkid . ' URI=' . $request->getUri() . "\n",
+        file_put_contents($logFile,
+            date('Y-m-d H:i:s') . ' TRACKING: gclid=' . $gclid . ' msclkid=' . $msclkid . "\n",
             FILE_APPEND
         );
 
