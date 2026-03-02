@@ -39,7 +39,7 @@ class AdsTrackingListener
             return;
         }
 
-        file_put_contents(__DIR__ . '/debug.txt',
+        file_put_contents('/tmp/ads-tracker-debug.txt',
             date('Y-m-d H:i:s') . ' TRACKING: gclid=' . $gclid . ' msclkid=' . $msclkid . ' URI=' . $request->getUri() . "\n",
             FILE_APPEND
         );
@@ -64,7 +64,7 @@ class AdsTrackingListener
                 'user_agent'   => (string) $request->headers->get('User-Agent', ''),
             ]);
         } catch (\Throwable $e) {
-            file_put_contents(__DIR__ . '/debug.txt',
+            file_put_contents('/tmp/ads-tracker-debug.txt',
                 date('Y-m-d H:i:s') . ' DB ERROR: ' . $e->getMessage() . "\n" .
                 '  URI: ' . $request->getUri() . "\n",
                 FILE_APPEND
