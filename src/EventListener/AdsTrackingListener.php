@@ -19,17 +19,8 @@ class AdsTrackingListener
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        file_put_contents(__DIR__ . '/debug.txt',
-            date('Y-m-d H:i:s') . ' CALLED: ' . $event->getRequest()->getUri() . "\n",
-            FILE_APPEND
-        );
-
         // Only handle the main request, not sub-requests
         if (!$event->isMainRequest()) {
-            file_put_contents(__DIR__ . '/debug2.txt',
-                date('Y-m-d H:i:s') . ' STOP: not main request' . "\n",
-                FILE_APPEND
-            );
             return;
         }
 
@@ -37,10 +28,6 @@ class AdsTrackingListener
 
         // Only track regular page GET requests
         if (!$request->isMethod('GET') || $request->isXmlHttpRequest()) {
-            file_put_contents(__DIR__ . '/debug2.txt',
-                date('Y-m-d H:i:s') . ' STOP: not GET or is AJAX. Method=' . $request->getMethod() . "\n",
-                FILE_APPEND
-            );
             return;
         }
 
@@ -49,15 +36,11 @@ class AdsTrackingListener
 
         // Nothing to track if neither parameter is present
         if ('' === $gclid && '' === $msclkid) {
-            file_put_contents(__DIR__ . '/debug2.txt',
-                date('Y-m-d H:i:s') . ' STOP: no gclid/msclkid. URI=' . $request->getUri() . ' QUERY=' . $request->getQueryString() . "\n",
-                FILE_APPEND
-            );
             return;
         }
 
-        file_put_contents(__DIR__ . '/debug2.txt',
-            date('Y-m-d H:i:s') . ' REACHED DB INSERT: gclid=' . $gclid . ' msclkid=' . $msclkid . "\n",
+        file_put_contents(__DIR__ . '/debug.txt',
+            date('Y-m-d H:i:s') . ' TRACKING: gclid=' . $gclid . ' msclkid=' . $msclkid . ' URI=' . $request->getUri() . "\n",
             FILE_APPEND
         );
 
@@ -82,7 +65,8 @@ class AdsTrackingListener
             ]);
         } catch (\Throwable $e) {
             file_put_contents(__DIR__ . '/debug.txt',
-                date('Y-m-d H:i:s') . ' DB ERROR: ' . $e->getMessage() . "\n",
+                date('Y-m-d H:i:s') . ' DB ERROR: ' . $e->getMessage() . "\n" .
+                '  URI: ' . $request->getUri() . "\n",
                 FILE_APPEND
             );
         }
