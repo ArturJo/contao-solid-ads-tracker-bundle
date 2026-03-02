@@ -19,39 +19,38 @@ class AdsTrackingListener
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        $logFile = dirname(__DIR__, 5) . '/var/logs/ads-tracker-debug.txt';
-        $request = $event->getRequest();
+        // Contao's ContaoCache calls the inner kernel as SUB_REQUEST, so
+        // isMainRequest() is always false and the Symfony request object may
+        // have tracking params stripped. We use PHP superglobals instead,
+        // which always reflect the original user request.
 
-        file_put_contents($logFile,
-            date('Y-m-d H:i:s') . ' CALLED isMain=' . ($event->isMainRequest() ? 'yes' : 'no')
-            . ' method=' . $request->getMethod()
-            . ' gclid=' . $request->query->get('gclid', '')
-            . ' URI=' . $request->getUri() . "\n",
-            FILE_APPEND
-        );
-
-        // Only handle the main request, not sub-requests
-        if (!$event->isMainRequest()) {
+        // Only track GET requests
+        if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'GET') {
             return;
         }
 
-        // Only track regular page GET requests
-        if (!$request->isMethod('GET') || $request->isXmlHttpRequest()) {
+        // Skip AJAX requests
+        if (($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'XMLHttpRequest') {
             return;
         }
 
-        $gclid   = (string) $request->query->get('gclid', '');
-        $msclkid = (string) $request->query->get('msclkid', '');
+        $gclid   = (string) ($_GET['gclid'] ?? '');
+        $msclkid = (string) ($_GET['msclkid'] ?? '');
 
-        // Nothing to track if neither parameter is present
         if ('' === $gclid && '' === $msclkid) {
             return;
         }
 
-        file_put_contents($logFile,
-            date('Y-m-d H:i:s') . ' TRACKING: gclid=' . $gclid . ' msclkid=' . $msclkid . "\n",
-            FILE_APPEND
-        );
+        // Only track once per PHP request lifecycle (multiple sub-requests fire this event)
+        static $tracked = false;
+        if ($tracked) {
+            return;
+        }
+        $tracked = true;
+
+        // Reconstruct original URL from superglobals
+        $isHttps = !empty($_SERVER['HTTPS']) && 'off' !== $_SERVER['HTTPS'];
+        $pageUrl = ($isHttps ? 'https://' : 'http://') . ($_SERVER['HTTP_HOST'] ?? '') . ($_SERVER['REQUEST_URI'] ?? '/');
 
         $source = '' !== $gclid ? 'google' : 'bing';
         $now    = time();
@@ -61,23 +60,19 @@ class AdsTrackingListener
                 'tstamp'       => $now,
                 'source'       => $source,
                 'visited_at'   => date('Y-m-d H:i:s', $now),
-                'page_url'     => $request->getUri(),
+                'page_url'     => $pageUrl,
                 'gclid'        => $gclid,
                 'msclkid'      => $msclkid,
-                'utm_source'   => (string) $request->query->get('utm_source', ''),
-                'utm_medium'   => (string) $request->query->get('utm_medium', ''),
-                'utm_campaign' => (string) $request->query->get('utm_campaign', ''),
-                'utm_term'     => (string) $request->query->get('utm_term', ''),
-                'utm_content'  => (string) $request->query->get('utm_content', ''),
-                'referrer'     => (string) $request->headers->get('referer', ''),
-                'user_agent'   => (string) $request->headers->get('User-Agent', ''),
+                'utm_source'   => (string) ($_GET['utm_source'] ?? ''),
+                'utm_medium'   => (string) ($_GET['utm_medium'] ?? ''),
+                'utm_campaign' => (string) ($_GET['utm_campaign'] ?? ''),
+                'utm_term'     => (string) ($_GET['utm_term'] ?? ''),
+                'utm_content'  => (string) ($_GET['utm_content'] ?? ''),
+                'referrer'     => (string) ($_SERVER['HTTP_REFERER'] ?? ''),
+                'user_agent'   => (string) ($_SERVER['HTTP_USER_AGENT'] ?? ''),
             ]);
         } catch (\Throwable $e) {
-            file_put_contents(dirname(__DIR__, 5) . '/var/logs/ads-tracker-debug.txt',
-                date('Y-m-d H:i:s') . ' DB ERROR: ' . $e->getMessage() . "\n" .
-                '  URI: ' . $request->getUri() . "\n",
-                FILE_APPEND
-            );
+            // Silently fail to not break the application
         }
     }
 }
