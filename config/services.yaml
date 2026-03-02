@@ -21,6 +21,10 @@ services:
         arguments:
             $connection: '@doctrine.dbal.default_connection'
 
+    Solidwork\ContaoSolidAdsTrackerBundle\Command\SetupCommand:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+
     Solidwork\ContaoSolidAdsTrackerBundle\EventListener\AdsTrackingListener:
         arguments:
             $connection: '@doctrine.dbal.default_connection'
