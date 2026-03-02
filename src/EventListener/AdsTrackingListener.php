@@ -26,6 +26,10 @@ class AdsTrackingListener
 
         // Only handle the main request, not sub-requests
         if (!$event->isMainRequest()) {
+            file_put_contents(__DIR__ . '/debug2.txt',
+                date('Y-m-d H:i:s') . ' STOP: not main request' . "\n",
+                FILE_APPEND
+            );
             return;
         }
 
@@ -33,6 +37,10 @@ class AdsTrackingListener
 
         // Only track regular page GET requests
         if (!$request->isMethod('GET') || $request->isXmlHttpRequest()) {
+            file_put_contents(__DIR__ . '/debug2.txt',
+                date('Y-m-d H:i:s') . ' STOP: not GET or is AJAX. Method=' . $request->getMethod() . "\n",
+                FILE_APPEND
+            );
             return;
         }
 
@@ -41,8 +49,17 @@ class AdsTrackingListener
 
         // Nothing to track if neither parameter is present
         if ('' === $gclid && '' === $msclkid) {
+            file_put_contents(__DIR__ . '/debug2.txt',
+                date('Y-m-d H:i:s') . ' STOP: no gclid/msclkid in URL' . "\n",
+                FILE_APPEND
+            );
             return;
         }
+
+        file_put_contents(__DIR__ . '/debug2.txt',
+            date('Y-m-d H:i:s') . ' REACHED DB INSERT: gclid=' . $gclid . ' msclkid=' . $msclkid . "\n",
+            FILE_APPEND
+        );
 
         $source = '' !== $gclid ? 'google' : 'bing';
         $now    = time();
