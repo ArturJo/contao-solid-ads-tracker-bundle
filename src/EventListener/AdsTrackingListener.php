@@ -19,6 +19,11 @@ class AdsTrackingListener
 
     public function onKernelRequest(RequestEvent $event): void
     {
+        file_put_contents('/tmp/ads_tracker_debug.txt',
+            date('Y-m-d H:i:s') . ' LISTENER CALLED: ' . $event->getRequest()->getUri() . "\n",
+            FILE_APPEND
+        );
+
         // Only handle the main request, not sub-requests
         if (!$event->isMainRequest()) {
             return;
