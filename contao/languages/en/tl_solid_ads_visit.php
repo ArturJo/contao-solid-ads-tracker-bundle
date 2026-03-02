@@ -9,11 +9,11 @@ $GLOBALS['TL_LANG']['tl_solid_ads_visit']['visited_at']   = ['Date & Time', 'Tim
 $GLOBALS['TL_LANG']['tl_solid_ads_visit']['page_url']     = ['Visited URL', 'The full URL the visitor accessed'];
 $GLOBALS['TL_LANG']['tl_solid_ads_visit']['gclid']        = ['Google Click-ID (gclid)', 'Unique identifier of the Google Ads click'];
 $GLOBALS['TL_LANG']['tl_solid_ads_visit']['msclkid']      = ['Bing Click-ID (msclkid)', 'Unique identifier of the Bing Ads click'];
-$GLOBALS['TL_LANG']['tl_solid_ads_visit']['utm_source']   = ['UTM Source', 'utm_source parameter from the URL'];
-$GLOBALS['TL_LANG']['tl_solid_ads_visit']['utm_medium']   = ['UTM Medium', 'utm_medium parameter from the URL'];
-$GLOBALS['TL_LANG']['tl_solid_ads_visit']['utm_campaign'] = ['UTM Campaign', 'utm_campaign parameter from the URL'];
-$GLOBALS['TL_LANG']['tl_solid_ads_visit']['utm_term']     = ['UTM Term', 'utm_term parameter from the URL'];
-$GLOBALS['TL_LANG']['tl_solid_ads_visit']['utm_content']  = ['UTM Content', 'utm_content parameter from the URL'];
+$GLOBALS['TL_LANG']['tl_solid_ads_visit']['utm_source']   = ['utm_source', 'utm_source parameter from the URL'];
+$GLOBALS['TL_LANG']['tl_solid_ads_visit']['utm_medium']   = ['utm_medium', 'utm_medium parameter from the URL'];
+$GLOBALS['TL_LANG']['tl_solid_ads_visit']['utm_campaign'] = ['utm_campaign', 'utm_campaign parameter from the URL'];
+$GLOBALS['TL_LANG']['tl_solid_ads_visit']['utm_term']     = ['utm_term', 'utm_term parameter from the URL'];
+$GLOBALS['TL_LANG']['tl_solid_ads_visit']['utm_content']  = ['utm_content', 'utm_content parameter from the URL'];
 $GLOBALS['TL_LANG']['tl_solid_ads_visit']['referrer']     = ['Referrer', 'Origin page from the HTTP referrer header'];
 $GLOBALS['TL_LANG']['tl_solid_ads_visit']['user_agent']   = ['Browser / User-Agent', 'Browser identifier of the visitor'];
 
