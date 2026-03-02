@@ -50,7 +50,7 @@ class AdsTrackingListener
         // Nothing to track if neither parameter is present
         if ('' === $gclid && '' === $msclkid) {
             file_put_contents(__DIR__ . '/debug2.txt',
-                date('Y-m-d H:i:s') . ' STOP: no gclid/msclkid in URL' . "\n",
+                date('Y-m-d H:i:s') . ' STOP: no gclid/msclkid. URI=' . $request->getUri() . ' QUERY=' . $request->getQueryString() . "\n",
                 FILE_APPEND
             );
             return;
