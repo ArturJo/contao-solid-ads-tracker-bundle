@@ -24,6 +24,7 @@ A Contao 5.3 bundle for automatically tracking visitors who arrive via **Google 
 1. Open Contao Manager
 2. Search for `solidwork/contao-solid-ads-tracker-bundle`
 3. Install and update the database
+4. Run the required setup via SSH (see section below)
 
 ### Via Composer
 
